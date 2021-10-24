@@ -25,3 +25,13 @@ Route.get('/', async () => {
 })
 
 Route.get('prices', 'PricesController.getPrices')
+
+Route.get('/price', 'PricesController.getPrice')
+
+// Route.post('/post-price', 'PriceController.postPrice')
+
+// Route.get('/prices', 'PriceController.getPrices')
+
+// Route.get('/schedule', 'ScheduleController.getSchedule')
+
+// Route.get('/previous-next-coupon', 'ScheduleController.getPreviousNextCoupon')

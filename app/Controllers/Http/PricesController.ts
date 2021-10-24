@@ -40,10 +40,39 @@ export default class PricesController {
 
       latestPrice.yield_yesterday = yesterdaysPrice ? yesterdaysPrice.yield : ''
       latestPrice.yield_difference = yesterdaysPrice
-        ? (latestPrice.yield - yesterdaysPrice.yield).toFixed(2)
+        ? (latestPrice.yield - parseFloat(yesterdaysPrice.yield)).toFixed(2)
         : ''
     })
 
     return ctx.response.json(latestPrices)
+  }
+
+  public async getPrice(ctx: HttpContextContract) {
+    const all = ctx.request.all()
+
+    const slug = all.slug
+    const page = all.page
+    const perPage = 10
+
+    if (slug) {
+      const title = slug.replace(/-/g, ' ')
+
+      if (page) {
+        const price = await Price.query()
+          .where('title', title)
+          .where('eod', 1)
+          .forPage(page, perPage)
+          .orderBy('created_at', 'desc')
+
+        return ctx.response.json(price)
+      }
+
+      const price = await Price.query()
+        .where('title', title)
+        .where('eod', 1)
+        .orderBy('created_at', 'desc')
+
+      return ctx.response.json(price)
+    }
   }
 }
