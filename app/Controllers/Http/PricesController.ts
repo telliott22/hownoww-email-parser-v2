@@ -1,7 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Price from 'App/Models/Price'
 import sanityClient from '../../../sanity/client'
-import bondQuery from '../../../sanity/queries'
+import bondBasicQuery from '../../../sanity/queries'
 
 export type Bond = {
   title: string
@@ -93,7 +93,7 @@ export default class PricesController {
     let bondCount = 1
 
     if ((from === 'markets@fbnbank.co.uk' || from === 'telliott22@gmail.com') && html.length) {
-      const bonds = await sanityClient().fetch(bondQuery)
+      const bonds = await sanityClient().fetch(bondBasicQuery)
 
       const $ = cheerio.load(html)
 

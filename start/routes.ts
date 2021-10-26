@@ -30,6 +30,6 @@ Route.get('/price', 'PricesController.getPrice')
 
 Route.post('/post-price', 'PricesController.postPrice')
 
-// Route.get('/schedule', 'ScheduleController.getSchedule')
+Route.get('/schedule', 'SchedulesController.getSchedule')
 
-// Route.get('/previous-next-coupon', 'ScheduleController.getPreviousNextCoupon')
+Route.get('/previous-next-coupon', 'SchedulesController.getPreviousNextCoupon')
