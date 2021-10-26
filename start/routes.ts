@@ -28,9 +28,7 @@ Route.get('prices', 'PricesController.getPrices')
 
 Route.get('/price', 'PricesController.getPrice')
 
-// Route.post('/post-price', 'PriceController.postPrice')
-
-// Route.get('/prices', 'PriceController.getPrices')
+Route.post('/post-price', 'PricesController.postPrice')
 
 // Route.get('/schedule', 'ScheduleController.getSchedule')
 
