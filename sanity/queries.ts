@@ -1,9 +1,8 @@
-export type SanityQuery = string
-// export type SanityQueryWithParam = (param: { slug: string }) => SanityQuery
+type SanityQuery = string
 
-export const bondBasicQuery: SanityQuery = '*[_type == "bond"]{_id, title, "slug": slug.current}'
+const bondBasicQuery: SanityQuery = '*[_type == "bond"]{_id, title, "slug": slug.current}'
 
-export function bondScheduleQuery(params: { slug: string }): SanityQuery {
+function bondScheduleQuery(params: { slug: string }): SanityQuery {
   const slug = params.slug
 
   const query: SanityQuery = `*[_type == "bond" && slug.current == '${slug}'][0]{
@@ -12,3 +11,8 @@ export function bondScheduleQuery(params: { slug: string }): SanityQuery {
 
   return query
 }
+
+const bondCouponQuery: SanityQuery =
+  '*[_type == "bond"]{_id, title, coupon, maturityDate, "slug": slug.current}'
+
+export { bondCouponQuery, bondScheduleQuery, bondBasicQuery }

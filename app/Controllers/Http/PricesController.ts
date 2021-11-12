@@ -1,7 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Price from 'App/Models/Price'
 import sanityClient from '../../../sanity/client'
-import bondBasicQuery from '../../../sanity/queries'
+import { bondBasicQuery } from '../../../sanity/queries'
 
 export type Bond = {
   title: string
@@ -25,8 +25,6 @@ export default class PricesController {
   }
 
   public async getPrices(ctx: HttpContextContract) {
-    // const _ = require('lodash')
-
     //Only get the prices for the last 3 days
     const date = new Date()
     date.setDate(date.getDate() - 7)

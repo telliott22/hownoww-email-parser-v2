@@ -33,3 +33,7 @@ Route.post('/post-price', 'PricesController.postPrice')
 Route.get('/schedule', 'SchedulesController.getSchedule')
 
 Route.get('/previous-next-coupon', 'SchedulesController.getPreviousNextCoupon')
+
+Route.get('/coupons-month', 'CouponsController.getCouponsByMonth')
+
+Route.get('/coupons-this-year', 'CouponsController.getCouponsThisYear')
