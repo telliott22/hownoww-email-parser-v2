@@ -6,6 +6,7 @@ type Bond = {
   issuer?: string
   maturityDate?: string
   couponDate?: string
+  coupon?: string
 }
 
 export default class CouponsController {
@@ -38,7 +39,7 @@ export default class CouponsController {
 
     const couponsThisYearArray: object[] = []
 
-    for (let i = 1; i <= 12; i++) {
+    for (let i = 0; i <= 12; i++) {
       bonds.forEach((bond: Bond) => {
         const maturityDate = bond.maturityDate
 
@@ -68,8 +69,12 @@ export default class CouponsController {
             (maturityDateMonth === compareDate.getMonth() + 1 ||
               maturityDateMonth === sixMonths.getMonth() + 1)
           ) {
+            const splitMaturity = bond.maturityDate.split('-')
+
             const formattedBond: Bond = {
-              couponDate: bond.maturityDate.split('-')[2] + '/' + monthYear,
+              ...bond,
+              couponDate: splitMaturity[2] + '/' + monthYear,
+              maturityDate: splitMaturity.reverse().join('/'),
             }
 
             couponsThisYearArray[monthYear].coupons.push(formattedBond)

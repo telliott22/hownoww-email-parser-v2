@@ -13,6 +13,6 @@ function bondScheduleQuery(params: { slug: string }): SanityQuery {
 }
 
 const bondCouponQuery: SanityQuery =
-  '*[_type == "bond"]{_id, title, coupon, maturityDate, "slug": slug.current}'
+  '*[_type == "bond"]{_id, title, issuer, coupon, maturityDate, "slug": slug.current}'
 
 export { bondCouponQuery, bondScheduleQuery, bondBasicQuery }
