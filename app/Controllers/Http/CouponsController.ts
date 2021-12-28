@@ -134,7 +134,7 @@ export default class CouponsController {
       principalAmount: numberWithCommas(principalAmount),
       accruedInterest: accruedInterest.toFixed(2),
       accrualDays,
-      total: numberWithCommas(total.toFixed(2)),
+      total: numberWithCommas(parseInt(total.toFixed(2), 10)),
     }
   }
 }
