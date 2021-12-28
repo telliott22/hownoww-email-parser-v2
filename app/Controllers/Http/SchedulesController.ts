@@ -74,9 +74,18 @@ export default class SchedulesController {
       const nextCoupon = scheduleArray[scheduleArray.length - 1]
       const previousCoupon = compareDate.format('DD/MM/YY')
 
+      let previousBeforeFirst = false
+
+      if (bond.firstCoupon) {
+        const firstCoupon = moment(bond.firstCoupon, 'YYYY-MM-DD').hour(0).minute(0)
+
+        previousBeforeFirst = previousCoupon < firstCoupon
+      }
+
       return {
         next: nextCoupon,
         previous: previousCoupon,
+        previousBeforeFirst,
       }
     }
   }
