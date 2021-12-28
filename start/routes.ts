@@ -37,3 +37,5 @@ Route.get('/previous-next-coupon', 'SchedulesController.getPreviousNextCoupon')
 Route.get('/coupons-month', 'CouponsController.getCouponsByMonth')
 
 Route.get('/coupons-this-year', 'CouponsController.getCouponsThisYear')
+
+Route.get('/cash-calculator', 'CouponsController.getCashCalculator')

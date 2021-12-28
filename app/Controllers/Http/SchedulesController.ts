@@ -12,6 +12,10 @@ export default class SchedulesController {
 
       const bond = await sanityClient().fetch(query)
 
+      if (!bond) {
+        return ctx.response.notFound('Bond not found')
+      }
+
       const dateToCompare = bond.longShortCouponDate ? bond.longShortCouponDate : bond.maturityDate
 
       const compareDate = moment(dateToCompare, 'YYYY-MM-DD').hour(0).minute(0)
@@ -41,7 +45,6 @@ export default class SchedulesController {
 
       return scheduleArray.reverse()
     }
-    return 'here'
   }
 
   public async getPreviousNextCoupon(ctx: HttpContextContract) {
