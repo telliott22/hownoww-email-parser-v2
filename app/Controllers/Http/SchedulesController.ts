@@ -126,6 +126,9 @@ export default class SchedulesController {
 
       const scheduleArray: string[] = []
 
+      console.log('bond', bond)
+      console.log('bond.customCouponSchedule', bond.customCouponSchedule)
+
       if (bond.customCouponSchedule) {
         const customCouponSchedule = bond.customCouponSchedule.split(',')
 
