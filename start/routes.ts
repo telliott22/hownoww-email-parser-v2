@@ -39,3 +39,5 @@ Route.get('/coupons-month', 'CouponsController.getCouponsByMonth')
 Route.get('/coupons-this-year', 'CouponsController.getCouponsThisYear')
 
 Route.get('/cash-calculator', 'CouponsController.getCashCalculator')
+
+Route.post('/index-records', 'AlgoliaController.indexRecords')

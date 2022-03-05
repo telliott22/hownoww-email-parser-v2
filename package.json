@@ -27,7 +27,9 @@
     "@adonisjs/lucid": "^16.2.1",
     "@adonisjs/repl": "^3.1.7",
     "@sanity/client": "^2.21.7",
+    "algoliasearch": "^4.12.0",
     "cheerio": "^1.0.0-rc.10",
+    "csvtojson": "^2.0.10",
     "days360": "^2.0.0",
     "luxon": "^2.0.2",
     "mail-notifier": "^0.5.0",
@@ -35,6 +37,7 @@
     "mysql": "^2.18.1",
     "proxy-addr": "^2.0.7",
     "reflect-metadata": "^0.1.13",
+    "sanity-algolia": "^1.0.2",
     "source-map-support": "^0.5.20"
   }
 }

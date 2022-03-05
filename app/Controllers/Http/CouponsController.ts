@@ -10,6 +10,7 @@ type Bond = {
   maturityDate?: string
   couponDate?: string
   coupon?: string
+  customCouponSchedule?: string
 }
 
 export default class CouponsController {
@@ -19,18 +20,37 @@ export default class CouponsController {
     const bondMonths: Bond[] = []
 
     bonds.forEach((bond: Bond) => {
+      console.log('bond', bond)
       const today = new Date()
       const sixMonthsFuture = new Date(today.getFullYear(), today.getMonth() + 6, today.getDate())
 
-      //No need to add 1 because maturityDate is a string
-      const bondMonth = bond.maturityDate ? parseInt(bond.maturityDate.split('-')[1]) : null
+      if (bond.customCouponSchedule) {
+        const customCouponSchedule = bond.customCouponSchedule.split(',')
 
-      //Have to add 1 to the month because dates are 0 indexed
-      const currentMonth = new Date(today).getMonth() + 1
-      const sixMonthsFutureMonth = new Date(sixMonthsFuture).getMonth() + 1
+        for (let index = 0; index < customCouponSchedule.length; index++) {
+          const row = customCouponSchedule[index]
 
-      if ((bondMonth && bondMonth === currentMonth) || bondMonth === sixMonthsFutureMonth) {
-        bondMonths.push(bond)
+          const bondMonth = parseInt(row.split('/')[1])
+
+          //Have to add 1 to the month because dates are 0 indexed
+          const currentMonth = new Date(today).getMonth() + 1
+          const sixMonthsFutureMonth = new Date(sixMonthsFuture).getMonth() + 1
+
+          if ((bondMonth && bondMonth === currentMonth) || bondMonth === sixMonthsFutureMonth) {
+            bondMonths.push(bond)
+          }
+        }
+      } else {
+        //No need to add 1 because maturityDate is a string
+        const bondMonth = bond.maturityDate ? parseInt(bond.maturityDate.split('-')[1]) : null
+
+        //Have to add 1 to the month because dates are 0 indexed
+        const currentMonth = new Date(today).getMonth() + 1
+        const sixMonthsFutureMonth = new Date(sixMonthsFuture).getMonth() + 1
+
+        if ((bondMonth && bondMonth === currentMonth) || bondMonth === sixMonthsFutureMonth) {
+          bondMonths.push(bond)
+        }
       }
     })
 
@@ -44,41 +64,65 @@ export default class CouponsController {
 
     for (let i = 0; i <= 12; i++) {
       bonds.forEach((bond: Bond) => {
-        const maturityDate = bond.maturityDate
+        const today = new Date()
 
-        if (maturityDate) {
-          const maturityDateMonth = parseInt(maturityDate.split('-')[1])
+        const compareDate = new Date(today.getFullYear(), today.getMonth() + i, today.getDate())
+        const sixMonths = new Date(
+          compareDate.getFullYear(),
+          compareDate.getMonth() + 6,
+          compareDate.getDate()
+        )
 
-          const today = new Date()
+        const monthYear = compareDate.getMonth() + 1 + '/' + compareDate.getFullYear()
 
-          const compareDate = new Date(today.getFullYear(), today.getMonth() + i, today.getDate())
-          const sixMonths = new Date(
-            compareDate.getFullYear(),
-            compareDate.getMonth() + 6,
-            compareDate.getDate()
-          )
+        if (!couponsThisYearArray[monthYear]) {
+          couponsThisYearArray[monthYear] = {
+            date: monthYear,
+            coupons: [],
+          }
+        }
 
-          const monthYear = compareDate.getMonth() + 1 + '/' + compareDate.getFullYear()
+        if (bond.customCouponSchedule) {
+          const customCouponSchedule = bond.customCouponSchedule.split(',')
 
-          if (!couponsThisYearArray[monthYear]) {
-            couponsThisYearArray[monthYear] = {
-              date: monthYear,
-              coupons: [],
+          for (let index = 0; index < customCouponSchedule.length; index++) {
+            const customCoupon = customCouponSchedule[index]
+
+            const maturityDateMonth = parseInt(customCoupon.split('/')[1])
+
+            if (
+              maturityDateMonth === compareDate.getMonth() + 1 ||
+              maturityDateMonth === sixMonths.getMonth() + 1
+            ) {
+              const customCouponSplit = customCoupon.split('/')
+              const formattedBond: Bond = {
+                ...bond,
+                couponDate: customCouponSplit[0] + '/' + monthYear,
+                maturityDate: formatDate(bond.maturityDate),
+              }
+
+              couponsThisYearArray[monthYear].coupons.push(formattedBond)
             }
           }
+        } else {
+          const maturityDate = bond.maturityDate
 
-          if (
-            bond.maturityDate &&
-            (maturityDateMonth === compareDate.getMonth() + 1 ||
-              maturityDateMonth === sixMonths.getMonth() + 1)
-          ) {
-            const formattedBond: Bond = {
-              ...bond,
-              couponDate: bond.maturityDate.split('-')[2] + '/' + monthYear,
-              maturityDate: formatDate(bond.maturityDate),
+          if (maturityDate) {
+            const maturityDateMonth = parseInt(maturityDate.split('-')[1])
+
+            if (
+              bond.maturityDate &&
+              (maturityDateMonth === compareDate.getMonth() + 1 ||
+                maturityDateMonth === sixMonths.getMonth() + 1)
+            ) {
+              const formattedBond: Bond = {
+                ...bond,
+                couponDate: bond.maturityDate.split('-')[2] + '/' + monthYear,
+                maturityDate: formatDate(bond.maturityDate),
+              }
+
+              couponsThisYearArray[monthYear].coupons.push(formattedBond)
             }
-
-            couponsThisYearArray[monthYear].coupons.push(formattedBond)
           }
         }
       })
